@@ -1,6 +1,6 @@
 # Claude Code Base
 
-A comprehensive, unified Claude Code configuration repository combining best practices from the Claude Code ecosystem.
+A comprehensive, unified Claude Code configuration repository combining best practices from several Claude Code orchestration systems. It is recommended to pick & choose what is relevant to your scope and use-case.
 
 ## Description
 
