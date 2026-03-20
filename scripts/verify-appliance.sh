@@ -135,6 +135,9 @@ if [ "$JSON_MODE" = "0" ]; then
   if [ -f /etc/os-release ]; then
     OS_NAME=$(grep PRETTY /etc/os-release 2>/dev/null | cut -d= -f2 | tr -d '"' || echo "unknown")
     echo "║  OS: $OS_NAME"
+  elif [ "$(uname)" = "Darwin" ]; then
+    OS_NAME="macOS $(sw_vers -productVersion 2>/dev/null || echo 'unknown')"
+    echo "║  OS: $OS_NAME"
   fi
   echo "║  Node: $(node --version 2>/dev/null || echo 'N/A')"
   echo "║  Ruflo: $RUFLO_VERSION"
@@ -467,7 +470,7 @@ fi
 # ── 30. Isolation Checks ──────────────────────────────────────
 if should_run "isolation"; then
   section 30 "Isolation Checks"
-  if [ -f /.dockerenv ] || grep -q docker /proc/1/cgroup 2>/dev/null; then
+  if [ -f /.dockerenv ] || ([ -f /proc/1/cgroup ] && grep -q docker /proc/1/cgroup 2>/dev/null); then
     check "isolation: running in container" test -f /.dockerenv -o -d /run/.containerenv
     check_warn "isolation: non-root user" test "$(id -u)" != "0"
     check "isolation: /tmp writable" test -w /tmp

@@ -22,7 +22,36 @@ Claude Code Base is an all-in-one configuration package for Claude Code that inc
 - Node.js 18+
 - Git
 
+### macOS (Apple Silicon / Intel)
+
+macOS is fully supported. Install prerequisites with [Homebrew](https://brew.sh):
+
+```bash
+# Install Homebrew if not already installed
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install Node.js 20+ via nvm (recommended)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.zshrc   # or ~/.bash_profile
+nvm install 20 && nvm use 20
+
+# Or via Homebrew
+brew install node
+
+# Install Claude Code CLI
+npm install -g @anthropic-ai/claude-code
+```
+
+> **Note for Apple Silicon (M1/M2/M3):** All Node.js tooling runs natively via arm64. No Rosetta 2 needed for this project.
+
+### Linux / WSL2
+
+Standard Linux prerequisites apply. See the Installation section below.
+
 ### Installation
+
+> **If `~/.claude/` already exists** (i.e., Claude Code is already configured), use the
+> [Selective Installation](#selective-installation) steps instead of cloning into `~/.claude/` directly.
 
 ```bash
 # Clone the repository
@@ -32,8 +61,8 @@ git clone https://github.com/nbossn/claude-code-base.git ~/.claude/
 cd ~/.claude
 npm install
 
-# Run the setup script
-./install.sh
+# Run the setup script (installs rules for one or more languages)
+./install.sh typescript python
 ```
 
 ### Basic Usage
@@ -141,8 +170,8 @@ cd ~/.claude
 # 3. Install dependencies
 npm install
 
-# 4. Run installer
-./install.sh
+# 4. Run installer (specify one or more languages)
+./install.sh typescript python
 
 # 5. Configure Claude Code
 # Edit ~/.claude/settings.json as needed
@@ -150,16 +179,28 @@ npm install
 
 ### Selective Installation
 
+Use this approach when `~/.claude/` already exists (Claude Code is already set up):
+
 ```bash
-# Install only skills
-cp -r skills/* ~/.claude/skills/
+# Clone to a local directory (not ~/.claude/ directly)
+git clone https://github.com/nbossn/claude-code-base.git ~/claude-code-base
+cd ~/claude-code-base
 
-# Install only commands
-cp -r commands/* ~/.claude/commands/
+# Install npm dependencies
+npm install
 
-# Install specific language rules
-cp -r rules/typescript/ ~/.claude/rules/
+# Install rules for your language(s)
+./install.sh typescript python golang swift
+
+# Copy skills, commands, and agents into your existing ~/.claude/
+cp -r skills ~/.claude/skills
+cp -r commands ~/.claude/commands
+cp -r agents ~/.claude/agents
 ```
+
+> **macOS tip:** The above selective approach is recommended when Claude Code is
+> already installed, since `~/.claude/` will already contain your settings,
+> sessions, and other Claude Code data.
 
 ### MCP Server Setup
 
