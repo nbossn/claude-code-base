@@ -40,3 +40,6 @@ examples/sessions/*.tmp
 
 # Local drafts
 marketing/
+
+# Claude Flow runtime data (session state, context cache)
+.claude-flow/
